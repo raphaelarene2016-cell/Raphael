@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DevisFlash Pro aide les independants a creer un devis, un email de proposition et une relance client en quelques minutes.">
+  <title>DevisFlash Pro - Devis et relances sans abonnement</title>
+  <style>
+    :root {
+      --ink: #17211c;
+      --muted: #63716a;
+      --line: #d8e0d7;
+      --paper: #f6f8f2;
+      --panel: #ffffff;
+      --green: #287b56;
+      --green-dark: #1d5d40;
+      --blue: #276c98;
+      --orange: #c96832;
+      --soft-green: #eaf3ea;
+      --soft-blue: #e9f2f7;
+      --soft-orange: #fbefe7;
+      --shadow: 0 22px 54px rgba(25, 42, 31, 0.13);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    a { color: inherit; }
+
+    .nav {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 5vw;
+      border-bottom: 1px solid rgba(216, 224, 215, 0.85);
+      background: rgba(246, 248, 242, 0.94);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+    }
+
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 850; text-decoration: none; }
+    .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 7px; background: var(--ink); color: #fff; font-size: 0.78rem; }
+    .nav-link { color: var(--muted); text-decoration: none; font-size: 0.92rem; font-weight: 700; }
+
+    .hero {
+      min-height: calc(100vh - 70px);
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(430px, 1.1fr);
+      gap: clamp(32px, 6vw, 94px);
+      align-items: center;
+      padding: 60px 7vw 76px;
+      background: #f6f8f2;
+    }
+
+    .eyebrow { margin: 0 0 16px; color: var(--green-dark); font-weight: 800; font-size: 0.78rem; text-transform: uppercase; }
+    h1 { margin: 0; max-width: 670px; font-size: clamp(2.5rem, 5vw, 5rem); line-height: 0.98; letter-spacing: 0; }
+    .hero-copy { max-width: 540px; margin: 22px 0 0; color: var(--muted); font-size: 1.08rem; line-height: 1.6; }
+    .hero-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+
+    .button {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border: 1px solid var(--ink);
+      border-radius: 7px;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 800;
+      transition: transform 150ms ease, background 150ms ease;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+    .button.buy { border-color: var(--green); background: var(--green); color: #fff; }
+    .button.buy:hover { background: var(--green-dark); }
+    .button.secondary { background: transparent; color: var(--ink); }
+
+    .note { margin: 17px 0 0; color: var(--muted); font-size: 0.83rem; line-height: 1.5; }
+
+    .product-preview {
+      border: 1px solid #cdd8cc;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .preview-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; border-bottom: 1px solid var(--line); background: #fbfcf9; }
+    .preview-title { display: flex; align-items: center; gap: 8px; font-size: 0.81rem; font-weight: 850; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--orange); }
+    .preview-status { color: var(--green-dark); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+    .preview-content { display: grid; grid-template-columns: 0.86fr 1.14fr; gap: 12px; padding: 13px; background: #f4f7f1; }
+    .preview-form, .preview-quote { border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+    .preview-form { padding: 12px; }
+    .mini-label { color: var(--muted); font-size: 0.58rem; font-weight: 850; text-transform: uppercase; }
+    .field-line { height: 22px; margin: 6px 0 10px; border: 1px solid #d7e0d7; border-radius: 4px; background: #fbfcfa; }
+    .field-line.short { width: 68%; }
+    .field-line.green { width: 82%; border-color: #b9d7c0; background: #edf7ef; }
+    .mini-add { display: inline-flex; padding: 6px 7px; border-radius: 4px; background: var(--soft-green); color: var(--green-dark); font-size: 0.61rem; font-weight: 850; }
+    .preview-quote { padding: 14px; }
+    .quote-top { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 10px; border-bottom: 2px solid var(--ink); }
+    .quote-heading { font-size: 1.2rem; font-weight: 900; }
+    .quote-meta { color: var(--muted); text-align: right; font-size: 0.55rem; line-height: 1.6; }
+    .quote-block-row { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; padding: 10px 0; }
+    .quote-block { min-height: 40px; padding: 6px; border: 1px solid var(--line); border-radius: 4px; color: #778279; font-size: 0.52rem; line-height: 1.5; }
+    .quote-row { height: 12px; margin-top: 7px; border-bottom: 1px solid #e0e6df; }
+    .quote-total { width: 46%; height: 27px; margin: 13px 0 0 auto; display: flex; align-items: center; justify-content: center; border-top: 2px solid var(--ink); color: var(--green-dark); font-size: 0.7rem; font-weight: 900; }
+
+    .proof { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: #fff; }
+    .proof-inner { max-width: 1180px; margin: 0 auto; padding: 25px 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+    .proof-item { display: flex; gap: 12px; align-items: flex-start; }
+    .proof-number { color: var(--orange); font-weight: 900; font-size: 1.25rem; line-height: 1; }
+    .proof-item strong { display: block; font-size: 0.88rem; }
+    .proof-item p { margin: 4px 0 0; color: var(--muted); font-size: 0.82rem; line-height: 1.45; }
+
+    .section { max-width: 1180px; margin: 0 auto; padding: 88px 24px; }
+    .section-heading { max-width: 630px; }
+    h2 { margin: 0; font-size: clamp(1.85rem, 3.2vw, 3rem); line-height: 1.08; }
+    .section-intro { margin: 15px 0 0; color: var(--muted); line-height: 1.6; }
+
+    .benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+    .benefit { min-height: 188px; padding: 22px; border-top: 3px solid var(--green); background: #fff; }
+    .benefit:nth-child(2) { border-color: var(--blue); }
+    .benefit:nth-child(3) { border-color: var(--orange); }
+    .benefit-index { color: var(--muted); font-size: 0.72rem; font-weight: 850; }
+    .benefit h3 { margin: 23px 0 8px; font-size: 1.05rem; }
+    .benefit p { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.55; }
+
+    .pricing-band { background: #17211c; color: #fff; }
+    .pricing { max-width: 1180px; margin: 0 auto; padding: 84px 24px; }
+    .pricing .section-intro { color: #b8c7ba; }
+    .prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 38px; }
+    .price { min-height: 292px; display: flex; flex-direction: column; align-items: flex-start; padding: 22px; border: 1px solid #405248; background: #1e2b23; }
+    .price.featured { border: 2px solid #75bd8e; background: #eef7ed; color: var(--ink); }
+    .price-name { font-weight: 850; font-size: 1.02rem; }
+    .price-amount { margin: 18px 0 8px; font-size: 2.2rem; font-weight: 900; }
+    .price p { margin: 0; color: #b8c7ba; font-size: 0.87rem; line-height: 1.55; }
+    .price.featured p { color: var(--muted); }
+    .price .button { width: 100%; margin-top: auto; }
+    .price .button.secondary { border-color: #829589; color: #fff; }
+
+    .delivery { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(300px, 0.8fr); gap: 54px; align-items: center; }
+    .delivery-list { margin: 28px 0 0; padding: 0; list-style: none; counter-reset: process; }
+    .delivery-list li { position: relative; min-height: 56px; padding: 1px 0 0 50px; counter-increment: process; color: var(--muted); line-height: 1.48; }
+    .delivery-list li::before { content: counter(process); position: absolute; left: 0; top: 0; width: 31px; height: 31px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--green-dark); font-size: 0.76rem; font-weight: 900; }
+    .delivery-callout { padding: 28px; border-left: 4px solid var(--orange); background: var(--soft-orange); }
+    .delivery-callout strong { display: block; font-size: 1.08rem; }
+    .delivery-callout p { margin: 10px 0 0; color: #6e5547; line-height: 1.55; }
+
+    footer { padding: 30px 6vw; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; color: var(--muted); font-size: 0.82rem; }
+
+    @media (max-width: 840px) {
+      .hero, .delivery { grid-template-columns: 1fr; }
+      .hero { min-height: auto; padding: 58px 24px; }
+      .proof-inner, .benefits, .prices { grid-template-columns: 1fr; }
+      .preview-content { grid-template-columns: 0.82fr 1.18fr; }
+    }
+
+    @media (max-width: 520px) {
+      .nav { padding: 0 18px; }
+      .nav-link { display: none; }
+      .hero { padding: 48px 20px 54px; }
+      .section, .pricing { padding: 64px 20px; }
+      .preview-content { grid-template-columns: 1fr; }
+      .preview-form { display: none; }
+      .proof-inner { padding: 23px 20px; }
+      footer { padding: 24px 20px; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="DevisFlash Pro, accueil"><span class="brand-mark">DF</span><span>DevisFlash Pro</span></a>
+    <a class="nav-link" href="#acheter">Acheter maintenant</a>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow">Pour artisans, freelances et independants</p>
+        <h1 id="hero-title">Un devis propre. Le bon email. La relance deja ecrite.</h1>
+        <p class="hero-copy">DevisFlash Pro reunit les informations client, les montants et les messages qui font avancer une vente. Pas de compte. Pas d'abonnement. Ouvre-le dans ton navigateur et reponds a un prospect sans repartir de zero.</p>
+        <div class="hero-actions">
+          <a class="button buy" href="https://paypal.me/RaphaelARENE/29EUR" target="_blank" rel="noopener">Acheter pour 29 EUR</a>
+          <a class="button secondary" href="#fonctionnement">Voir comment ca marche</a>
+        </div>
+        <p class="note">Paiement securise par PayPal. Livraison manuelle du fichier ZIP apres confirmation du paiement.</p>
+      </div>
+
+      <div class="product-preview" aria-label="Apercu de DevisFlash Pro">
+        <div class="preview-bar"><div class="preview-title"><span class="dot"></span>DevisFlash Pro</div><span class="preview-status">Pret a envoyer</span></div>
+        <div class="preview-content">
+          <div class="preview-form">
+            <div class="mini-label">Client</div><div class="field-line"></div>
+            <div class="mini-label">Projet</div><div class="field-line green"></div>
+            <div class="mini-label">Prestations</div><div class="field-line short"></div><div class="field-line"></div>
+            <span class="mini-add">+ Ajouter une ligne</span>
+          </div>
+          <div class="preview-quote">
+            <div class="quote-top"><span class="quote-heading">Devis</span><span class="quote-meta">DF-2026-001<br>Date et validite</span></div>
+            <div class="quote-block-row"><div class="quote-block">EMETTEUR<br>Votre activite</div><div class="quote-block">CLIENT<br>Entreprise cliente</div></div>
+            <div class="quote-row"></div><div class="quote-row"></div><div class="quote-row"></div>
+            <div class="quote-total">TOTAL : 440 EUR</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="proof" aria-label="Ce que DevisFlash Pro produit">
+      <div class="proof-inner">
+        <div class="proof-item"><span class="proof-number">01</span><div><strong>Un devis lisible</strong><p>Prestations, TVA, remise et acompte calcules au meme endroit.</p></div></div>
+        <div class="proof-item"><span class="proof-number">02</span><div><strong>Un PDF en un clic</strong><p>Utilise l'impression du navigateur pour envoyer une proposition nette.</p></div></div>
+        <div class="proof-item"><span class="proof-number">03</span><div><strong>Une relance preparee</strong><p>Le message de proposition et la relance restent coherents avec le devis.</p></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="fonctionnement">
+      <div class="section-heading">
+        <p class="eyebrow">Fait pour aller vite</p>
+        <h2>Tu reponds plus vite quand un prospect est chaud.</h2>
+        <p class="section-intro">Le but n'est pas de remplacer tout ton logiciel de compta. Le but est de sortir une proposition claire, avec le bon acompte et les bons mots, avant que le prospect passe a autre chose.</p>
+      </div>
+      <div class="benefits">
+        <article class="benefit"><span class="benefit-index">01 / DEVIS</span><h3>Remplis les infos</h3><p>Client, projet, prestations, prix et conditions. Tout se met a jour instantanement.</p></article>
+        <article class="benefit"><span class="benefit-index">02 / ENVOIE</span><h3>Copie le bon message</h3><p>Tu recuperes l'email de proposition adapte au montant et a l'acompte.</p></article>
+        <article class="benefit"><span class="benefit-index">03 / RELANCE</span><h3>Ne laisse pas mourir la vente</h3><p>Une relance commerciale est deja ecrite quand le client ne repond pas.</p></article>
+      </div>
+    </section>
+
+    <section class="pricing-band" id="acheter">
+      <div class="pricing">
+        <p class="eyebrow" style="color:#9cd5ae">Choisis ton niveau</p>
+        <h2>Le fichier seul, ou une version prete pour ton activite.</h2>
+        <p class="section-intro">Tu paies une fois. Aucun abonnement mensuel.</p>
+        <div class="prices">
+          <article class="price"><span class="price-name">DevisFlash Pro</span><span class="price-amount">29 EUR</span><p>Le fichier complet, utilisable tout de suite, avec devis PDF, email de proposition et relance.</p><a class="button secondary" href="https://paypal.me/RaphaelARENE/29EUR" target="_blank" rel="noopener">Acheter le fichier</a></article>
+          <article class="price featured"><span class="price-name">Version personnalisee</span><span class="price-amount">149 EUR</span><p>Ton nom, tes coordonnees, tes prestations et tes conditions sont deja prepares dans l'outil.</p><a class="button buy" href="https://paypal.me/RaphaelARENE/149EUR" target="_blank" rel="noopener">Choisir la version perso</a></article>
+          <article class="price"><span class="price-name">Pack complet</span><span class="price-amount">390 EUR</span><p>Personnalisation complete, installation sur une URL privee et accompagnement de prise en main.</p><a class="button secondary" href="https://paypal.me/RaphaelARENE/390EUR" target="_blank" rel="noopener">Choisir le pack complet</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section delivery">
+      <div>
+        <p class="eyebrow">Livraison simple</p>
+        <h2>Tu paies, tu laisses ton email, je t'envoie le fichier.</h2>
+        <ol class="delivery-list">
+          <li>Choisis la formule adaptee a ton besoin.</li>
+          <li>Sur PayPal, choisis <strong>Biens et services</strong> et indique ton email dans la note.</li>
+          <li>Apres confirmation du paiement, tu recois le ZIP et tu ouvres simplement <code>index.html</code>.</li>
+        </ol>
+      </div>
+      <aside class="delivery-callout"><strong>Pas besoin d'installer un logiciel.</strong><p>DevisFlash Pro fonctionne localement dans un navigateur moderne. Tes informations restent sur ton ordinateur.</p></aside>
+    </section>
+  </main>
+
+  <footer><span>DevisFlash Pro</span><span>Outil de devis et relances sans abonnement</span></footer>
+</body>
+</html>
